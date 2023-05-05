@@ -1,4 +1,5 @@
-import { React, useState, useEffect } from 'react';
+import React from 'react';
+import { useState, useEffect } from 'react';
 import { useAuthState } from '~/components/contexts/UserContext';
 import { Head } from '~/components/shared/Head';
 import { useFirestore, useStorage } from '~/lib/firebase';
@@ -49,11 +50,14 @@ function Index() {
     fetchData();
   }, []);
 
-  const onUpdateTool = (id: string, data: Partial<Tool>) => {
-    const docRef = doc(firestore, 'tools', id);
+  const onUpdateTool = (updatedTool: Partial<Tool>) => {
+    if (!updatedTool.id) {
+      return;
+    }
 
-    updateDoc(docRef, data)
-      .then((docRef) => {
+    const docRef = doc(firestore, 'tools', updatedTool.id);
+    updateDoc(docRef, updatedTool)
+      .then(() => {
         toast.success('Updated successfully!', {
           position: 'top-right',
           autoClose: 5000,
@@ -94,7 +98,7 @@ function Index() {
       });
   };
 
-  const handleInputChange = (field: InputEnum, value: string) => {
+  const handleInputChange = (field: InputEnum, value: string | undefined) => {
     setInputData({ ...inputData, [field]: value });
   };
 
@@ -122,7 +126,10 @@ function Index() {
         progress: undefined,
         theme: 'dark',
       });
-      setTools([...tools, { id: docRef.id, ...newTool }]);
+      setTools([
+        ...tools,
+        { id: docRef.id, title: inputData.title, description: inputData.description, url: inputData.url },
+      ]);
       setInputData({
         title: '',
         description: '',
@@ -169,7 +176,12 @@ function Index() {
           </form>
           <div className="grid sm:grid-cols-2 gap-4 max-w-full w-full mx-auto bg-transparent text-slate-50">
             {tools.map((tool) => (
-              <ToolCard key={tool.id} tool={tool} onUpdate={onUpdateTool} onDeleteTool={onDeleteTool} />
+              <ToolCard
+                key={tool.id}
+                tool={tool}
+                onUpdateTool={onUpdateTool}
+                onDeleteTool={(id: string) => onDeleteTool(id)}
+              />
             ))}
           </div>
         </div>

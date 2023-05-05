@@ -5,11 +5,11 @@ import clsx from 'clsx';
 
 interface ToolCardProps {
   tool: Tool;
-  onUpdate: (data: Partial<Tool>) => void;
+  onUpdateTool: (updatedTool: Partial<Tool>) => void;
   onDeleteTool: (id: string) => void;
 }
 
-const ToolCard = ({ tool, onUpdate, onDeleteTool }: ToolCardProps) => {
+const ToolCard = ({ tool, onUpdateTool, onDeleteTool }: ToolCardProps) => {
   const [isEdit, setIsEdit] = useState<boolean>(false);
   const [inputData, setInputData] = useState<Partial<Tool>>(tool);
 
@@ -17,7 +17,7 @@ const ToolCard = ({ tool, onUpdate, onDeleteTool }: ToolCardProps) => {
 
   const onClose = () => {
     setIsEdit(false);
-    setInputData(tool);
+    setInputData({ ...tool });
   };
 
   const handleInputChange = (field: InputEnum, value: string) => {
@@ -26,7 +26,9 @@ const ToolCard = ({ tool, onUpdate, onDeleteTool }: ToolCardProps) => {
 
   const handleUpdate = () => {
     setIsEdit(false);
-    onUpdate(tool.id, inputData);
+    if (inputData.title !== tool.title || inputData.description !== tool.description || inputData.url !== tool.url) {
+      onUpdateTool({ ...inputData, id: tool.id });
+    }
   };
 
   const inputClasses = clsx('bg-transparent', 'border-0', 'py-2', 'px-4', 'rounded-md');

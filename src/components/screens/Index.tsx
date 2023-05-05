@@ -1,20 +1,19 @@
 import React from 'react';
 import { useState, useEffect } from 'react';
-import { useAuthState } from '~/components/contexts/UserContext';
 import { Head } from '~/components/shared/Head';
-import { useFirestore, useStorage } from '~/lib/firebase';
+import { useFirestore } from '~/lib/firebase';
 import { collection, query, getDocs, addDoc, doc, updateDoc, deleteDoc } from 'firebase/firestore';
 import { ToastContainer, toast } from 'react-toastify';
 import ToolCard from '../shared/ToolCard';
 
 import 'react-toastify/dist/ReactToastify.css';
 
-export type Tool = {
+interface Tool {
   id: string;
-  title: string;
-  description: string;
-  url: string;
-};
+  title?: string;
+  description?: string;
+  url?: string;
+}
 
 export enum InputEnum {
   Id = 'id',
@@ -24,16 +23,14 @@ export enum InputEnum {
 }
 
 function Index() {
-  const { state } = useAuthState();
   const [tools, setTools] = useState<Array<Tool>>([]);
   const firestore = useFirestore();
-  const storage = useStorage();
   const [inputData, setInputData] = useState<Partial<Tool>>({
     title: '',
     description: '',
     url: '',
   });
-  const [image, setImage] = useState('');
+
   const [formError, setFormError] = useState<boolean>(false);
 
   useEffect(() => {

@@ -8,7 +8,7 @@ import ToolCard from '../shared/ToolCard';
 
 import 'react-toastify/dist/ReactToastify.css';
 
-interface Tool {
+export interface Tool {
   id: string;
   title?: string;
   description?: string;
@@ -142,7 +142,7 @@ function Index() {
       <Head title="Tools AI" />
       <div className="hero h-screen bg-slate-800">
         <div className="max-w-5xl mx-auto">
-          <form className="flex items-center justify-center" onSubmit={handleFormSubmit}>
+          <form className="flex flex-col lg:flex-row items-center  justify-center" onSubmit={handleFormSubmit}>
             <input
               type="text"
               onChange={(event) => handleInputChange(InputEnum.Title, event.target.value)}
@@ -171,15 +171,17 @@ function Index() {
               Add new tool
             </button>
           </form>
-          <div className="grid sm:grid-cols-2 gap-4 max-w-full w-full mx-auto bg-transparent text-slate-50">
-            {tools.map((tool) => (
-              <ToolCard
-                key={tool.id}
-                tool={tool}
-                onUpdateTool={onUpdateTool}
-                onDeleteTool={(id: string) => onDeleteTool(id)}
-              />
-            ))}
+          <div className="max-w-[600px] md:max-w-[1000px]">
+            <div className="grid sm:grid-cols-2 gap-4 sm:w-full mx-auto bg-transparent text-slate-50">
+              {tools.map((tool) => (
+                <ToolCard
+                  key={tool.id}
+                  tool={tool}
+                  onUpdateTool={onUpdateTool}
+                  onDeleteTool={(id: string) => onDeleteTool(id)}
+                />
+              ))}
+            </div>
           </div>
         </div>
       </div>

@@ -68,16 +68,19 @@ const ToolCard = ({ tool, onUpdateTool, onDeleteTool }: ToolCardProps) => {
           readOnly={!isEdit}
         />
       </div>
-      <input
-        className={clsx(inputClasses, 'text-slate-400 outline-none', {
-          'bg-gray-900': isEdit,
-          'cursor-text': isEdit,
-          'focus:outline-white': isEdit,
-        })}
-        value={inputData.url}
-        onChange={(e) => handleInputChange(InputEnum.Url, e.target.value)}
-        readOnly={!isEdit}
-      />
+      <a href={inputData.url} target="_blank" rel="noreferrer">
+        <input
+          className={clsx(inputClasses, 'text-slate-400 outline-none cursor-pointer', {
+            'bg-gray-900': isEdit,
+            'cursor-text': isEdit,
+            'focus:outline-white': isEdit,
+          })}
+          value={inputData.url}
+          onChange={(e) => handleInputChange(InputEnum.Url, e.target.value)}
+          readOnly={!isEdit}
+        />
+      </a>
+
       {isEdit ? (
         <>
           <CheckIcon

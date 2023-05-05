@@ -23,8 +23,10 @@ export enum InputEnum {
 }
 
 function Index() {
+  const { state } = useAuthState();
   const [tools, setTools] = useState<Array<Tool>>([]);
   const firestore = useFirestore();
+  const storage = useStorage();
   const [inputData, setInputData] = useState<Partial<Tool>>({
     title: '',
     description: '',

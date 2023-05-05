@@ -26,6 +26,14 @@ const ToolCard = ({ tool, onUpdateTool, onDeleteTool }: ToolCardProps) => {
 
   const handleUpdate = () => {
     setIsEdit(false);
+
+    // Check if all required fields are filled
+    if (!inputData.title || !inputData.description || !inputData.url) {
+      console.error('All fields are required!');
+      return;
+    }
+
+    // Update the tool if any of the input values have changed
     if (inputData.title !== tool.title || inputData.description !== tool.description || inputData.url !== tool.url) {
       onUpdateTool({ ...inputData, id: tool.id });
     }
@@ -43,6 +51,7 @@ const ToolCard = ({ tool, onUpdateTool, onDeleteTool }: ToolCardProps) => {
           className={clsx(inputClasses, 'text-xl mb-2 font-bold text-slate-100 outline-none', {
             'bg-gray-900': isEdit,
             'cursor-text': isEdit,
+            'focus:outline-white': isEdit,
           })}
           value={inputData.title}
           onChange={(e) => handleInputChange(InputEnum.Title, e.target.value)}
@@ -52,6 +61,7 @@ const ToolCard = ({ tool, onUpdateTool, onDeleteTool }: ToolCardProps) => {
           className={clsx(inputClasses, 'outline-none', {
             'bg-gray-900': isEdit,
             'cursor-text': isEdit,
+            'focus:outline-white': isEdit,
           })}
           value={inputData.description}
           onChange={(e) => handleInputChange(InputEnum.Description, e.target.value)}
@@ -62,15 +72,20 @@ const ToolCard = ({ tool, onUpdateTool, onDeleteTool }: ToolCardProps) => {
         className={clsx(inputClasses, 'text-slate-400 outline-none', {
           'bg-gray-900': isEdit,
           'cursor-text': isEdit,
+          'focus:outline-white': isEdit,
         })}
-        value={tool.url}
+        value={inputData.url}
         onChange={(e) => handleInputChange(InputEnum.Url, e.target.value)}
         readOnly={!isEdit}
       />
       {isEdit ? (
         <>
           <CheckIcon
-            onClick={handleUpdate}
+            onClick={() => {
+              if (inputData.title && inputData.description && inputData.url) {
+                handleUpdate();
+              }
+            }}
             className="h-6 w-6 text-green-500 absolute top-4 hover:text-green-400 right-16 cursor-pointer"
           />
           <XCircleIcon
@@ -86,7 +101,7 @@ const ToolCard = ({ tool, onUpdateTool, onDeleteTool }: ToolCardProps) => {
         <button
           className="btn btn-active btn-ghost hidden group-hover:block absolute top-4 right-4 p-0"
           onClick={toggleIsEdit}
-          disabled={!inputData.title || !inputData.description || !tool.url}
+          disabled={!tool.title || !tool.description || !tool.url}
         >
           <PencilSquareIcon className="h-6 w-6 text-slate-50 cursor-pointer" />
         </button>

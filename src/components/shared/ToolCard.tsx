@@ -40,7 +40,7 @@ const ToolCard = ({ tool, onUpdateTool, onDeleteTool }: ToolCardProps) => {
     >
       <div className="pt-6">
         <input
-          className={clsx(inputClasses, 'text-xl mb-2 font-bold text-slate-50 outline-none', {
+          className={clsx(inputClasses, 'text-xl mb-2 font-bold text-slate-100 outline-none', {
             'bg-gray-900': isEdit,
             'cursor-text': isEdit,
           })}

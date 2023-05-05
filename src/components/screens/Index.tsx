@@ -166,7 +166,8 @@ function Index() {
             />
             <button
               type="submit"
-              className="m-4 border border-purple-500 p-3 rounded-lg transition-opacity bg-purple-600 bg-opacity-30 hover:bg-opacity-50 text-slate-50"
+              className="m-4 px-6 py-2 rounded-lg bg-purple-500 text-slate-50 disabled:opacity-50"
+              disabled={!inputData.title || !inputData.description || !inputData.url}
             >
               Add new tool
             </button>
@@ -185,7 +186,7 @@ function Index() {
           </div>
         </div>
       </div>
-      <ToastContainer />
+      <ToastContainer progressClassName="toastify-progress-purple" />
     </>
   );
 }
